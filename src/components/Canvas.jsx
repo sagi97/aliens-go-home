@@ -42,8 +42,12 @@ const Canvas = props => {
 
       { props.gameState.started &&
         <g>
-          <FlyingObject position={{x: -150, y: -300}} />
-          <FlyingObject position={{x: 150, y: -300}} />
+          {props.gameState.flyingObjects.map(flyingObject => (
+            <FlyingObject
+              key={flyingObject.id}
+              position={flyingObject.position}
+            />
+          ))}
         </g>
       }
       <Heart position={{x: -300, y: 35}} />

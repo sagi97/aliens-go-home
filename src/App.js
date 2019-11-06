@@ -49,6 +49,15 @@ class App extends Component {
 App.propTypes = {
   angle: PropTypes.number.isRequired,
   moveObjects: PropTypes.func.isRequired,
+  gameState: PropTypes.shape({
+    flyingObjects: PropTypes.arrayOf(PropTypes.shape({
+      position: PropTypes.shape({
+        x: PropTypes.number.isRequired,
+        y: PropTypes.number.isRequired
+      }).isRequired,
+      id: PropTypes.number.isRequired,
+    })).isRequired,
+  }).isRequired,
 };
 
 export default App;
