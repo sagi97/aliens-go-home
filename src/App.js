@@ -38,6 +38,8 @@ class App extends Component {
     return (
       <Canvas
         angle={this.props.angle}
+        gameState={this.props.gameState}
+        startGame={this.props.startGame}
         trackMouse={event => (this.trackMouse(event))}
       />
     );
