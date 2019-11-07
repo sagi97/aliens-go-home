@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "auth0-js": "^9.11.3",
     "auth0-web": "^2.3.0",
     "prop-types": "^15.7.2",
     "react": "^16.11.0",
