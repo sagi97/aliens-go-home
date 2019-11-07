@@ -11,7 +11,7 @@ const auth0Client = new Auth0({
   domain: 'sagi-rika.auth0.com',
   audience: 'https://aliens-go-home.digituz.com.br',
   clientID: 'udT6xy73Xq1T5BsNUdcI6CUdkNQ7mMlb',
-  redirectUri: 'http://localhost:3000/',
+  redirectUri: process.env.REACT_APP_HOME_URL,
   responseType: 'token id_token',
   scope: 'openid profile manage:points',
 });
