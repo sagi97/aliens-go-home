@@ -11,7 +11,7 @@ const Login = (props) => {
       fill: 'transparent',
       cursor: 'pointer',
     },
-    onClick: () => props.authenticate(),
+    onClick: props.authenticate,
   };
 
   const text = {
