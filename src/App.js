@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Auth0 from 'auth0-web';
 import io from 'socket.io-client';
 
 import { getCanvasPosition } from './utils/formulas';
 import Canvas from './components/Canvas';
+import { useInterval, usePrevious } from './hooks';
 
 const auth0Client = new Auth0({
   domain: 'sagi-rika.auth0.com',
@@ -15,54 +16,51 @@ const auth0Client = new Auth0({
   scope: 'openid profile manage:points',
 });
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.socket = null;
-    this.currentPlayer = null;
-  }
-  state = {
-    interval: null
+const App = props => {
+  const [socket, setSocket] = useState(null);
+  // const [playerProfile, setPlayerProfile] = useState(null);
+  const [currentPlayer, setCurrentPlayer] = useState(null);
+  const [mousePosition, setMousePosition] = useState(null);
+  const prevGameState = usePrevious(props.gameState);
+
+  const shoot = () => {
+    props.shoot(mousePosition);
   }
 
-  shoot = () => {
-    this.props.shoot(this.canvasMousePosition);
-  }
+  useInterval(() => {
+    props.moveObjects(mousePosition);
+  }, 10)
 
-  componentDidMount() {
-    const self = this;
+  useEffect(() => {
     auth0Client.checkSession().then(auth => {
       if (auth) {
-        self.playerProfile = auth0Client.getProfile();
-        self.currentPlayer = {
-          id: self.playerProfile.sub,
+        const profile = auth0Client.getProfile();
+        const currentPlayer = {
+          id: profile.sub,
           maxScore: 0,
-          name: self.playerProfile.name,
-          picture: self.playerProfile.picture,
+          name: profile.name,
+          picture: profile.picture,
         };
+        props.loggedIn(currentPlayer);
     
-        this.props.loggedIn(self.currentPlayer);
-    
-        self.socket = io('http://localhost:3001', {
+        const socket = io('http://localhost:3001', {
           query: `token=${auth0Client.getAccessToken()}`,
         });
 
-        self.socket.on('players', (players) => {
-          self.props.leaderboardLoaded(players);
+        socket.on('players', (players) => {
+          props.leaderboardLoaded(players);
     
           players.forEach((player) => {
-            if (player.id === self.currentPlayer.id) {
-              self.currentPlayer.maxScore = player.maxScore;
+            if (player.id === currentPlayer.id) {
+              currentPlayer.maxScore = player.maxScore;
             }
           });
         });
+
+        setSocket(socket);
+        setCurrentPlayer(currentPlayer);
       }
     })
-
-    const myInterval = setInterval(() => {
-        self.props.moveObjects(self.canvasMousePosition);
-    }, 10);
-    this.setState({ interval: myInterval });
 
     window.onresize = () => {
       const cnv = document.getElementById('aliens-go-home-canvas');
@@ -70,43 +68,35 @@ class App extends Component {
       cnv.style.height = `${window.innerHeight}px`;
     };
     window.onresize();
-  }
+  }, [])
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.gameState.started && this.props.gameState.started) {
-      if (this.currentPlayer.maxScore < this.props.gameState.kills) {
-        this.socket.emit('new-max-score', {
-          ...this.currentPlayer,
-          maxScore: this.props.gameState.kills,
+  useEffect(() => {
+    if (props.gameState && !props.gameState.started && prevGameState && prevGameState.started) {
+      if (currentPlayer.maxScore < props.gameState.kills) {
+        socket.emit('new-max-score', {
+          ...currentPlayer,
+          maxScore: props.gameState.kills,
         });
       }
     }
+  }, [props.gameState.started])
+
+  const trackMouse = (event) => {
+    setMousePosition(getCanvasPosition(event));
   }
 
-  componentWillUnmount() {
-    const { myInterval } = this.state;
-    clearInterval(myInterval);
-    this.setState({ interval: null })
-  }
-
-  trackMouse(event) {
-    this.canvasMousePosition = getCanvasPosition(event);
-  }
-
-  render() {
-    return (
-      <Canvas
-        angle={this.props.angle}
-        currentPlayer={this.props.currentPlayer}
-        gameState={this.props.gameState}
-        startGame={this.props.startGame}
-        players={this.props.players}
-        trackMouse={event => (this.trackMouse(event))}
-        login={auth0Client.signIn.bind(auth0Client)}
-        shoot={this.shoot}
-      />
-    );
-  }
+  return (
+    <Canvas
+      angle={props.angle}
+      currentPlayer={props.currentPlayer}
+      gameState={props.gameState}
+      startGame={props.startGame}
+      players={props.players}
+      trackMouse={event => (trackMouse(event))}
+      login={auth0Client.signIn.bind(auth0Client)}
+      shoot={shoot}
+    />
+  );
 }
 
 App.propTypes = {

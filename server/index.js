@@ -39,7 +39,6 @@ const newMaxScoreHandler = (payload) => {
 
 io.on('connection', (socket) => {
   const { token } = socket.handshake.query;
-
   verifyPlayer(token, (err) => {
     if (err) socket.disconnect();
     io.emit('players', players);
