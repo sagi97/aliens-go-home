@@ -7,6 +7,8 @@ import { getCanvasPosition } from './utils/formulas';
 import Canvas from './components/Canvas';
 import { useInterval, usePrevious } from './hooks';
 
+console.log(process.env.REACT_APP_HOME_URL);
+
 const auth0Client = new Auth0({
   domain: 'sagi-rika.auth0.com',
   audience: 'https://aliens-go-home.digituz.com.br',
