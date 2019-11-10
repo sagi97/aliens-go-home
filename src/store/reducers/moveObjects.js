@@ -23,7 +23,7 @@ function moveObjects(state, action) {
   const lostLife = state.gameState.flyingObjects.length > flyingObjects.length;
   let lives = state.gameState.lives;
   if (lostLife) {
-    lives--;
+    // lives--;
   }
 
   const started = lives > 0;

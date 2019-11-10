@@ -6,6 +6,8 @@ import Ground from "./Ground";
 import { CannonBase, CannonPipe, CannonBall } from "./Cannon";
 import CurrentScore from "./CurrentScore";
 import FlyingObject from './FlyingObject';
+import FlyingObjectTop from './FlyingObject/FlyingObjectTop';
+import Alien from './Alien';
 import Heart from './Heart';
 import StartGame from './StartGame';
 import Title from './Title';
@@ -59,9 +61,9 @@ const Canvas = props => {
       }
 
       { props.gameState.started &&
-        <g>
+        <g className='aliens'>
           {props.gameState.flyingObjects.map(flyingObject => (
-            <FlyingObject
+            <Alien
               key={flyingObject.id}
               position={flyingObject.position}
             />
