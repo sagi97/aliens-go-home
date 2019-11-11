@@ -1,11 +1,12 @@
 import { calculateAngle } from '../../utils/formulas';
+import { maxCannonballs } from '../../utils/constants';
 
 function shoot(state, action) {
   if (!state.gameState.started) return state;
 
   const { cannonBalls } = state.gameState;
 
-  if (cannonBalls.length === 3) return state;
+  if (cannonBalls.length === maxCannonballs) return state;
 
   const { x, y } = action.mousePosition;
 

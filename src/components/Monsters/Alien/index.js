@@ -1,6 +1,6 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components';
-import { gameHeight } from '../../utils/constants';
+import { gameHeight } from '../../../utils/constants';
 
 import AlienTop from './AlienTop';
 import AlienBottom from './AlienBottom';

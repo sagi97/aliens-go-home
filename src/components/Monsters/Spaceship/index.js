@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
 
-import FlyingObjectBase from './FlyingObjectBase';
-import FlyingObjectTop from './FlyingObjectTop';
-import { gameHeight } from '../../utils/constants';
+import SpaceshipBase from './SpaceshipBase';
+import SpaceshipTop from './SpaceshipTop';
+import { gameHeight } from '../../../utils/constants';
 
 const moveVertically = keyframes`
   0% {
@@ -19,18 +19,18 @@ const Move = styled.g`
   animation: ${moveVertically} 4s linear;
 `;
 
-const FlyingObject = props => (
+const Spaceship = props => (
   <Move>
-    <FlyingObjectBase position={props.position} />
-    <FlyingObjectTop position={props.position} />
+    <SpaceshipBase position={props.position} />
+    <SpaceshipTop position={props.position} />
   </Move>
 );
 
-FlyingObject.propTypes = {
+Spaceship.propTypes = {
   position: PropTypes.shape({
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired
   }).isRequired,
 };
 
-export default FlyingObject;
+export default Spaceship;

@@ -3,11 +3,10 @@ import PropTypes from "prop-types";
 
 import Sky from "./Sky";
 import Ground from "./Ground";
-import { CannonBase, CannonPipe, CannonBall } from "./Cannon";
+import { Canno nBase, CannonPipe, CannonBall } from "./Cannon";
 import CurrentScore from "./CurrentScore";
-import FlyingObject from './FlyingObject';
-import FlyingObjectTop from './FlyingObject/FlyingObjectTop';
-import Alien from './Alien';
+import Spaceship from './Monsters/Spaceship';
+import Alien from './Monsters/Alien';
 import Heart from './Heart';
 import StartGame from './StartGame';
 import Title from './Title';

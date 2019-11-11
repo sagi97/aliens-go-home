@@ -1,6 +1,6 @@
 import {
-  createInterval, flyingObjectsStarterYAxis, maxFlyingObjects,
-  flyingObjectsStarterPositions
+  createInterval, monstersStarterYAxis, maxSpaceships,
+  monstersStarterPositions
 } from '../../utils/constants';
 
 export default state => {
@@ -10,18 +10,18 @@ export default state => {
   const { lastObjectCreatedAt, flyingObjects } = state.gameState;
   const createNewObject = (
     now - (lastObjectCreatedAt).getTime() > createInterval &&
-    flyingObjects.length < maxFlyingObjects
+    flyingObjects.length < maxSpaceships
   );
 
   if ( ! createNewObject) return state; // no need to create objects now
 
   const id = (new Date()).getTime();
-  const predefinedPosition = Math.floor(Math.random() * maxFlyingObjects);
-  const flyingObjectPosition = flyingObjectsStarterPositions[predefinedPosition];
+  const predefinedPosition = Math.floor(Math.random() * maxSpaceships);
+  const flyingObjectPosition = monstersStarterPositions[predefinedPosition];
   const newFlyingObject = {
     position: {
       x: flyingObjectPosition,
-      y: flyingObjectsStarterYAxis,
+      y: monstersStarterYAxis,
     },
     createdAt: (new Date()).getTime(),
     id,

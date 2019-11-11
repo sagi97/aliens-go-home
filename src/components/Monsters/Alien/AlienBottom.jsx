@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { pathFromBezierCurve } from '../../utils/formulas';
+import { pathFromBezierCurve } from '../../../utils/formulas';
 
-const AlienTop = (props) => {
+const AlienBottom = (props) => {
   const style = {
     fill: '#979797',
     stroke: '#5c5c5c',
@@ -11,7 +11,7 @@ const AlienTop = (props) => {
 
   const baseWith = 70;
   const halfBase = 35;
-  const height = 40;
+  const height = 65;
 
   const cubicBezierCurve = {
     initialAxis: {
@@ -19,12 +19,12 @@ const AlienTop = (props) => {
       y: props.position.y,
     },
     initialControlPoint: {
-      x: 17.5,
-      y: -height,
+      x: 25,
+      y: height,
     },
     endingControlPoint: {
-      x: 52.5,
-      y: -height,
+      x: 45,
+      y: height,
     },
     endingAxis: {
       x: baseWith,
@@ -40,11 +40,11 @@ const AlienTop = (props) => {
   );
 };
 
-AlienTop.propTypes = {
+AlienBottom.propTypes = {
   position: PropTypes.shape({
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired
   }).isRequired,
 };
 
-export default AlienTop;
+export default AlienBottom;

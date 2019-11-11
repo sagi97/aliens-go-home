@@ -1,8 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-
-import { pathFromBezierCurve } from '../../utils/formulas';
 
 const AlienEyes = (props) => {
   const style = {
@@ -13,25 +10,6 @@ const AlienEyes = (props) => {
   const baseWith = 20;
   const halfBase = 10;
   const height = 10;
-
-  const cubicBezierCurve = {
-    initialAxis: {
-      x: props.position.x - 10,
-      y: props.position.y,
-    },
-    initialControlPoint: {
-      x: halfBase,
-      y: height,
-    },
-    endingControlPoint: {
-      x: halfBase,
-      y: height,
-    },
-    endingAxis: {
-      x: 0,
-      y: 0,
-    },
-  };
 
   return (
     <>
