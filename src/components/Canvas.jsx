@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import Sky from "./Sky";
 import Ground from "./Ground";
-import { Canno nBase, CannonPipe, CannonBall } from "./Cannon";
+import { CannonBase, CannonPipe, CannonBall } from "./Cannon";
 import CurrentScore from "./CurrentScore";
 import Spaceship from './Monsters/Spaceship';
 import Alien from './Monsters/Alien';
@@ -61,12 +61,21 @@ const Canvas = props => {
 
       { props.gameState.started &&
         <g className='aliens'>
-          {props.gameState.flyingObjects.map(flyingObject => (
-            <Alien
-              key={flyingObject.id}
-              position={flyingObject.position}
-            />
-          ))}
+          {props.gameState.flyingObjects.map(flyingObject => {
+            const { type } = flyingObject;
+
+            if (type === 'alien') {
+              return <Alien
+                key={flyingObject.id}
+                position={flyingObject.position}
+              />
+            } else if (type === 'spaceship') {
+              return <Spaceship
+                key={flyingObject.id}
+                position={flyingObject.position}
+              />
+            }
+          })}
         </g>
       }
       {lives}
