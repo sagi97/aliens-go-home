@@ -17,7 +17,7 @@ export default state => {
 
   const id = (new Date()).getTime();
   const predefinedPosition = Math.floor(Math.random() * maxSpaceships);
-  const flyingObjectPosition = monstersStarterPositions[predefinedPosition];
+  const monsterPosition = monstersStarterPositions[predefinedPosition];
   let createSpaceship = true;
   let createAlien = true;
   if (monsters.filter(monster => monster.type === 'alien').length >= maxAliens) createAlien = false;
@@ -25,7 +25,7 @@ export default state => {
 
   const newMonster = {
     position: {
-      x: flyingObjectPosition,
+      x: monsterPosition,
       y: monstersStarterYAxis,
     },
     createdAt: (new Date()).getTime(),

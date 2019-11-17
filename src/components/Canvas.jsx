@@ -61,18 +61,18 @@ const Canvas = props => {
 
       { props.gameState.started &&
         <g className='aliens'>
-          {props.gameState.monsters.map(flyingObject => {
-            const { type } = flyingObject;
+          {props.gameState.monsters.map(monster => {
+            const { type } = monster;
 
             if (type === 'alien') {
               return <Alien
-                key={flyingObject.id}
-                position={flyingObject.position}
+                key={monster.id}
+                position={monster.position}
               />
             } else if (type === 'spaceship') {
               return <Spaceship
-                key={flyingObject.id}
-                position={flyingObject.position}
+                key={monster.id}
+                position={monster.position}
               />
             }
           })}
