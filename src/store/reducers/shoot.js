@@ -12,18 +12,18 @@ function shoot(state, action) {
 
   const angle = calculateAngle(0, 0, x, y);
 
-  const id = (new Date()).getTime();
+  const id = new Date().getTime();
   const cannonBall = {
     position: { x: 0, y: 0 },
     angle,
-    id,
+    id
   };
 
   return {
     ...state,
     gameState: {
       ...state.gameState,
-      cannonBalls: [...cannonBalls, cannonBall],
+      cannonBalls: [...cannonBalls, cannonBall]
     }
   };
 }

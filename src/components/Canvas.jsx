@@ -1,38 +1,39 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import Sky from "./Sky";
-import Ground from "./Ground";
-import { CannonBase, CannonPipe, CannonBall } from "./Cannon";
-import CurrentScore from "./CurrentScore";
+import Sky from './Sky';
+import Ground from './Ground';
+import { CannonBase, CannonPipe, CannonBall } from './Cannon';
+import CurrentScore from './CurrentScore';
 import Spaceship from './Monsters/Spaceship';
 import Alien from './Monsters/Alien';
 import Heart from './Heart';
 import StartGame from './StartGame';
 import Title from './Title';
-import Leaderboard from './Leaderboard/Leaderboard';
 
 import { gameHeight } from '../utils/constants';
 
 const Canvas = props => {
   const viewBox = [window.innerWidth / -2, 100 - gameHeight, window.innerWidth, gameHeight];
 
+  const { trackMouse, shoot, gameState, startGame, angle } = props;
+
   const lives = [];
-  for (let i = 0; i < props.gameState.lives; i++) {
+  for (let i = 0; i < gameState.lives; i += 1) {
     const heartPosition = {
-      x: -180 - (i * 70),
+      x: -180 - i * 70,
       y: 35
     };
-    lives.push(<Heart key={i} position={heartPosition}/>);
+    lives.push(<Heart key={i} position={heartPosition} />);
   }
 
   return (
     <svg
       id="aliens-go-home-canvas"
       preserveAspectRatio="xMaxYMax none"
-      onMouseMove={props.trackMouse}
+      onMouseMove={trackMouse}
       viewBox={viewBox}
-      onClick={props.shoot}
+      onClick={shoot}
     >
       <defs>
         <filter id="shadow">
@@ -41,43 +42,37 @@ const Canvas = props => {
       </defs>
       <Sky />
       <Ground />
-      {props.gameState.cannonBalls.map(cannonBall => (
-        <CannonBall
-          key={cannonBall.id}
-          position={cannonBall.position}
-        />
+      {gameState.cannonBalls.map(cannonBall => (
+        <CannonBall key={cannonBall.id} position={cannonBall.position} />
       ))}
-      <CannonPipe rotation={props.angle} />
+      <CannonPipe rotation={angle} />
       <CannonBase />
-      <CurrentScore score={props.gameState.kills} />
+      <CurrentScore score={gameState.kills} />
 
-      { !props.gameState.started && 
+      {!gameState.started && (
         <g>
-          <StartGame onClick={() => props.startGame()} />
+          <StartGame onClick={() => startGame()} />
           <Title />
-          <Leaderboard currentPlayer={props.currentPlayer} authenticate={ props.login } leaderboard={props.players} />
         </g>
-      }
+      )}
 
-      { props.gameState.started &&
-        <g className='aliens'>
-          {props.gameState.monsters.map(monster => {
+      {gameState.started && (
+        <g className="aliens">
+          {gameState.monsters.map(monster => {
             const { type } = monster;
 
-            if (type === 'alien') {
-              return <Alien
-                key={monster.id}
-                position={monster.position}
-              />
-            } else if (type === 'spaceship') {
-              return <Spaceship
-                key={monster.id}
-                position={monster.position}
-              />
-            }
+            if (type === 'alien')
+              return <Alien key={monster.id} position={monster.position} shake={monster.gotHit} />;
+
+            if (type === 'spaceship')
+              return (
+                <Spaceship key={monster.id} position={monster.position} shake={monster.gotHit} />
+              );
+
+            return '';
           })}
         </g>
-      }
+      )}
       {lives}
     </svg>
   );
@@ -89,28 +84,12 @@ Canvas.propTypes = {
     started: PropTypes.bool.isRequired,
     kills: PropTypes.number.isRequired,
     lives: PropTypes.number.isRequired,
+    cannonBalls: PropTypes.array.isRequired,
+    monsters: PropTypes.array.isRequired
   }).isRequired,
   trackMouse: PropTypes.func.isRequired,
   startGame: PropTypes.func.isRequired,
-  login: PropTypes.func.isRequired,
-  currentPlayer: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    maxScore: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    picture: PropTypes.string.isRequired,
-  }),
-  players: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    maxScore: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    picture: PropTypes.string.isRequired,
-  })),
-  shoot: PropTypes.func.isRequired,
-};
-
-Canvas.defaultProps = {
-  currentPlayer: null,
-  players: null,
+  shoot: PropTypes.func.isRequired
 };
 
 export default Canvas;

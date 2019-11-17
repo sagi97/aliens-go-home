@@ -8,18 +8,19 @@ const CurrentScore = props => {
     fill: '#d6d33e',
     userSelect: 'none'
   };
+  const { score } = props;
 
   return (
     <g filter="url(#shadow)">
       <text style={scoreStyle} x="300" y="80">
-        {props.score}
+        {score}
       </text>
     </g>
   );
 };
 
 CurrentScore.propTypes = {
-  score: PropTypes.number.isRequired,
+  score: PropTypes.number.isRequired
 };
 
 export default CurrentScore;

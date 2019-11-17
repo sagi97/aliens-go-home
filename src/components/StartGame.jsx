@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { gameWidth } from '../utils/constants';
 
-const StartGame = (props) => {
+const StartGame = props => {
+  const { onClick } = props;
   const button = {
     x: gameWidth / -2, // half width
     y: -280, // minus means up (above 0)
@@ -12,9 +13,9 @@ const StartGame = (props) => {
     ry: 10, // border radius
     style: {
       fill: 'transparent',
-      cursor: 'pointer',
+      cursor: 'pointer'
     },
-    onClick: props.onClick,
+    onClick
   };
 
   const text = {
@@ -25,22 +26,20 @@ const StartGame = (props) => {
       fontFamily: '"Joti One", cursive',
       fontSize: 60,
       fill: '#e3e3e3',
-      cursor: 'pointer',
+      cursor: 'pointer'
     },
-    onClick: props.onClick,
+    onClick
   };
   return (
     <g filter="url(#shadow)">
       <rect {...button} />
-      <text {...text}>
-        Tap To Start!
-      </text>
+      <text {...text}>Tap To Start!</text>
     </g>
   );
 };
 
 StartGame.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired
 };
 
 export default StartGame;

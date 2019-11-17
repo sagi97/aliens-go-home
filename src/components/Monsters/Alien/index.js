@@ -1,30 +1,48 @@
-import React from 'react'
-import styled, { keyframes } from 'styled-components';
-import { gameHeight } from '../../../utils/constants';
+import React from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import AlienTop from './AlienTop';
 import AlienBottom from './AlienBottom';
 import AlienEyes from './AlienEyes';
 
-const tmoveVertically = keyframes`
-    0% {
-      transform: translateY(0);
-    }
-    100% {
-      transform: translateY(${gameHeight}px);
-    }
-  `;
+import { Move, Shake } from '../Animations';
 
-  const Move = styled.g`
-    animation: ${tmoveVertically} 4s linear;
-  `;
-
-  const Alien = props => (
-    <Move>
-      <AlienTop position={props.position} />
-      <AlienBottom position={props.position} />
-      <AlienEyes position={props.position} />
-    </Move>
+const Alien = props => {
+  const { shake, position } = props;
+  return (
+    <MyMove>
+      {shake ? (
+        <MyShake>
+          <AlienTop position={position} />
+          <AlienBottom position={position} />
+          <AlienEyes position={position} />
+        </MyShake>
+      ) : (
+        <>
+          <AlienTop position={position} />
+          <AlienBottom position={position} />
+          <AlienEyes position={position} />
+        </>
+      )}
+    </MyMove>
   );
+};
 
-  export default Alien;
+const MyMove = styled.g`
+  animation: ${Move} 4s linear;
+`;
+
+const MyShake = styled.g`
+  animation: ${Shake} 0.8s linear;
+`;
+
+Alien.propTypes = {
+  position: PropTypes.shape({
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired
+  }).isRequired,
+  shake: PropTypes.bool
+};
+
+export default Alien;

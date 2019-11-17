@@ -4,9 +4,9 @@ import { skyAndGroundWidth, gameHeight } from '../utils/constants';
 
 const Sky = () => {
   const skyStyle = {
-    fill: '#30abef',
+    fill: '#30abef'
   };
-  
+
   return (
     <rect
       style={skyStyle}

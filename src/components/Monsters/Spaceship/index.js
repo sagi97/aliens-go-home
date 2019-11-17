@@ -1,36 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled, { keyframes } from 'styled-components';
-
+import styled, { css } from 'styled-components';
 import SpaceshipBase from './SpaceshipBase';
 import SpaceshipTop from './SpaceshipTop';
-import { gameHeight } from '../../../utils/constants';
 
-const moveVertically = keyframes`
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(${gameHeight}px);
-  }
+import { Move, Shake } from '../Animations';
+
+const Spaceship = props => {
+  const { position, shake } = props;
+
+  return (
+    <MyMove shake={shake}>
+      <SpaceshipBase position={position} />
+      <SpaceshipTop position={position} />
+    </MyMove>
+  );
+};
+
+export const MyMove = styled.g`
+  animation: ${Move} 4s linear ${({ shake }) => (shake ? css`, ${Shake} .8s linear;` : ';')};
 `;
-
-const Move = styled.g`
-  animation: ${moveVertically} 4s linear;
-`;
-
-const Spaceship = props => (
-  <Move>
-    <SpaceshipBase position={props.position} />
-    <SpaceshipTop position={props.position} />
-  </Move>
-);
 
 Spaceship.propTypes = {
   position: PropTypes.shape({
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired
   }).isRequired,
+  shake: PropTypes.bool
 };
 
 export default Spaceship;

@@ -10,20 +10,18 @@ function moveObjects(state, action) {
 
   const mousePosition = action.mousePosition || {
     x: 0,
-    y: 0,
+    y: 0
   };
 
   const newState = createMonsters(state);
 
-  const now = (new Date()).getTime();
-  let monsters = newState.gameState.monsters.filter(object => (
-    (now - object.createdAt) < 4000
-  ));
+  const now = new Date().getTime();
+  let monsters = newState.gameState.monsters.filter(object => now - object.createdAt < 4000);
 
   const lostLife = state.gameState.monsters.length > monsters.length;
-  let lives = state.gameState.lives;
+  let { lives } = state.gameState;
   if (lostLife) {
-    lives--;
+    lives -= 1;
   }
 
   const started = lives > 0;
@@ -37,11 +35,15 @@ function moveObjects(state, action) {
   const angle = calculateAngle(0, 0, x, y);
 
   const { objectsDestroyed, newMonsters } = checkCollisions(cannonBalls, monsters);
-  const cannonBallsDestroyed = objectsDestroyed.filter(object => object.type === 'cannonBall').map(cannonBall => cannonBall.id);
-  const monstersDestroyed = objectsDestroyed.filter(object => object.type === 'monster').map(monster => monster.id);
+  const cannonBallsDestroyed = objectsDestroyed
+    .filter(object => object.type === 'cannonBall')
+    .map(cannonBall => cannonBall.id);
+  const monstersDestroyed = objectsDestroyed
+    .filter(object => object.type === 'monster')
+    .map(monster => monster.id);
 
-  cannonBalls = cannonBalls.filter(cannonBall => (cannonBallsDestroyed.indexOf(cannonBall.id)));
-  monsters = newMonsters.filter(monster => (monstersDestroyed.indexOf(monster.id)));
+  cannonBalls = cannonBalls.filter(cannonBall => cannonBallsDestroyed.indexOf(cannonBall.id));
+  monsters = newMonsters.filter(monster => monstersDestroyed.indexOf(monster.id));
 
   const kills = state.gameState.kills + monstersDestroyed.length;
 
@@ -55,7 +57,7 @@ function moveObjects(state, action) {
       started,
       kills
     },
-    angle,
+    angle
   };
 }
 
