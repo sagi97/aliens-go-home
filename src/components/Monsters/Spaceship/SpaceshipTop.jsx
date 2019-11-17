@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { pathFromBezierCurve } from '../../../utils/formulas';
 
 const SpaceshipTop = props => {
+  const { position, damaged } = props;
   const style = {
-    fill: '#b6b6b6',
+    fill: damaged ? '#e74c3c' : '#b6b6b6',
     stroke: '#7d7d7d'
   };
-  const { position } = props;
   const baseWith = 40;
   const halfBase = 20;
   const height = 25;
@@ -38,7 +38,8 @@ SpaceshipTop.propTypes = {
   position: PropTypes.shape({
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired
-  }).isRequired
+  }).isRequired,
+  damaged: PropTypes.bool.isRequired
 };
 
 export default SpaceshipTop;

@@ -62,11 +62,11 @@ const Canvas = props => {
             const { type } = monster;
 
             if (type === 'alien')
-              return <Alien key={monster.id} position={monster.position} shake={monster.gotHit} />;
+              return <Alien key={monster.id} position={monster.position} lives={monster.lives} />;
 
             if (type === 'spaceship')
               return (
-                <Spaceship key={monster.id} position={monster.position} shake={monster.gotHit} />
+                <Spaceship key={monster.id} position={monster.position} lives={monster.lives} />
               );
 
             return '';

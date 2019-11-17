@@ -3,8 +3,9 @@ import { gameHeight } from '../../utils/constants';
 
 const checkCollisions = (cannonBalls, monsters) => {
   const objectsDestroyed = [];
-  monsters.forEach((monster, i) => {
-    monster.gotHit = false;
+  const newMonsters = [...monsters];
+
+  newMonsters.forEach((monster, i) => {
     const currentLifeTime = new Date().getTime() - monster.createdAt;
     const calculatedPosition = {
       x: monster.position.x,
@@ -34,8 +35,7 @@ const checkCollisions = (cannonBalls, monsters) => {
             type: 'monster'
           });
         } else {
-          monster.gotHit = true;
-          monster.lives--;
+          newMonsters[i].lives -= 1;
         }
       }
     });
