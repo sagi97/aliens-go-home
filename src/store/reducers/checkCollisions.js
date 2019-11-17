@@ -1,13 +1,13 @@
 import { checkCollision } from '../../utils/formulas';
 import { gameHeight } from '../../utils/constants';
 
-const checkCollisions = (cannonBalls, flyingDiscs) => {
+const checkCollisions = (cannonBalls, monsters) => {
   const objectsDestroyed = [];
-  flyingDiscs.forEach((flyingDisc) => {
-    const currentLifeTime = (new Date()).getTime() - flyingDisc.createdAt;
+  monsters.forEach((monster, i) => {
+    const currentLifeTime = (new Date()).getTime() - monster.createdAt;
     const calculatedPosition = {
-      x: flyingDisc.position.x,
-      y: flyingDisc.position.y + ((currentLifeTime / 4000) * gameHeight),
+      x: monster.position.x,
+      y: monster.position.y + ((currentLifeTime / 4000) * gameHeight),
     };
     const rectA = {
       x1: calculatedPosition.x - 40,
@@ -24,13 +24,21 @@ const checkCollisions = (cannonBalls, flyingDiscs) => {
       };
       if (checkCollision(rectA, rectB)) {
         objectsDestroyed.push({
-          cannonBallId: cannonBall.id,
-          flyingDiscId: flyingDisc.id,
-        });
+          id: cannonBall.id,
+          type: 'cannonBall'
+        })
+        if (monster.lives === 1) {
+          objectsDestroyed.push({
+            id: monster.id,
+            type: 'monster'
+          })
+        } else {
+          monster.lives --;
+        }
       }
     });
   });
-  return objectsDestroyed;
+  return { objectsDestroyed, newMonsters: monsters };
 };
 
 export default checkCollisions;

@@ -10,7 +10,7 @@ const initialGameState = {
   started: false,
   kills: 0,
   lives: 3,
-  flyingObjects: [],
+  monsters: [],
   lastObjectCreatedAt: new Date(),
   currentPlayer: null,
   players: null,

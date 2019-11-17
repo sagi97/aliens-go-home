@@ -103,7 +103,7 @@ App.propTypes = {
   angle: PropTypes.number.isRequired,
   moveObjects: PropTypes.func.isRequired,
   gameState: PropTypes.shape({
-    flyingObjects: PropTypes.arrayOf(PropTypes.shape({
+    monsters: PropTypes.arrayOf(PropTypes.shape({
       position: PropTypes.shape({
         x: PropTypes.number.isRequired,
         y: PropTypes.number.isRequired

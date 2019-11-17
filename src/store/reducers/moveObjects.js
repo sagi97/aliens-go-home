@@ -1,5 +1,5 @@
 import { calculateAngle } from '../../utils/formulas';
-import createFlyingObjects from './createFlyingObjects';
+import createMonsters from './createMonsters';
 import moveBalls from './moveCannonBalls';
 import checkCollisions from './checkCollisions';
 
@@ -13,14 +13,14 @@ function moveObjects(state, action) {
     y: 0,
   };
 
-  const newState = createFlyingObjects(state);
+  const newState = createMonsters(state);
 
   const now = (new Date()).getTime();
-  let flyingObjects = newState.gameState.flyingObjects.filter(object => (
+  let monsters = newState.gameState.monsters.filter(object => (
     (now - object.createdAt) < 4000
   ));
 
-  const lostLife = state.gameState.flyingObjects.length > flyingObjects.length;
+  const lostLife = state.gameState.monsters.length > monsters.length;
   let lives = state.gameState.lives;
   if (lostLife) {
     lives--;
@@ -28,7 +28,7 @@ function moveObjects(state, action) {
 
   const started = lives > 0;
   if (!started) {
-    flyingObjects = [];
+    monsters = [];
     cannonBalls = [];
     lives = 3;
   }
@@ -36,21 +36,21 @@ function moveObjects(state, action) {
   const { x, y } = mousePosition;
   const angle = calculateAngle(0, 0, x, y);
 
-  const objectsDestroyed = checkCollisions(cannonBalls, flyingObjects);
-  const cannonBallsDestroyed = objectsDestroyed.map(object => (object.cannonBallId));
-  const flyingDiscsDestroyed = objectsDestroyed.map(object => (object.flyingDiscId));
+  const { objectsDestroyed, newMonsters } = checkCollisions(cannonBalls, monsters);
+  const cannonBallsDestroyed = objectsDestroyed.filter(object => object.type === 'cannonBall').map(cannonBall => cannonBall.id);
+  const monstersDestroyed = objectsDestroyed.filter(object => object.type === 'monster').map(monster => monster.id);
 
   cannonBalls = cannonBalls.filter(cannonBall => (cannonBallsDestroyed.indexOf(cannonBall.id)));
-  flyingObjects = flyingObjects.filter(flyingDisc => (flyingDiscsDestroyed.indexOf(flyingDisc.id)));
+  monsters = newMonsters.filter(monster => (monstersDestroyed.indexOf(monster.id)));
 
-  const kills = state.gameState.kills + flyingDiscsDestroyed.length;
+  const kills = state.gameState.kills + monstersDestroyed.length;
 
   return {
     ...newState,
     gameState: {
       ...newState.gameState,
-      flyingObjects,
-      cannonBalls: [...cannonBalls ],
+      monsters,
+      cannonBalls,
       lives,
       started,
       kills

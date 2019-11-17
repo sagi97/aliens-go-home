@@ -7,10 +7,10 @@ export default state => {
   if ( ! state.gameState.started) return state; // game not running
 
   const now = (new Date()).getTime();
-  const { lastObjectCreatedAt, flyingObjects } = state.gameState;
+  const { lastObjectCreatedAt, monsters } = state.gameState;
   const createNewObject = (
     now - (lastObjectCreatedAt).getTime() > createInterval &&
-    flyingObjects.length < maxMonsters
+    monsters.length < maxMonsters
   );
 
   if ( ! createNewObject) return state; // no need to create objects now
@@ -20,10 +20,10 @@ export default state => {
   const flyingObjectPosition = monstersStarterPositions[predefinedPosition];
   let createSpaceship = true;
   let createAlien = true;
-  if (flyingObjects.filter(monster => monster.type === 'alien').length >= maxAliens) createAlien = false;
-  if (flyingObjects.filter(monster => monster.type === 'spaceship').length >= maxSpaceships) createSpaceship = false;
+  if (monsters.filter(monster => monster.type === 'alien').length >= maxAliens) createAlien = false;
+  if (monsters.filter(monster => monster.type === 'spaceship').length >= maxSpaceships) createSpaceship = false;
 
-  const newFlyingObject = {
+  const newMonster = {
     position: {
       x: flyingObjectPosition,
       y: monstersStarterYAxis,
@@ -36,13 +36,16 @@ export default state => {
       : 'spaceship'
   };
 
+  if (newMonster.type === 'alien') newMonster.lives = 1;
+  if (newMonster.type === 'spaceship') newMonster.lives = 2;
+
   return {
     ...state,
     gameState: {
       ...state.gameState,
-      flyingObjects: [
-        ...state.gameState.flyingObjects,
-        newFlyingObject
+      monsters: [
+        ...state.gameState.monsters,
+        newMonster
       ],
       lastObjectCreatedAt: new Date(),
     }

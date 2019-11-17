@@ -61,7 +61,7 @@ const Canvas = props => {
 
       { props.gameState.started &&
         <g className='aliens'>
-          {props.gameState.flyingObjects.map(flyingObject => {
+          {props.gameState.monsters.map(flyingObject => {
             const { type } = flyingObject;
 
             if (type === 'alien') {
